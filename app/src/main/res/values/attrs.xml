@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="customProgressBars">
+        <attr name="progress_bar_inner_stroke_width" format="dimension" />
+        <attr name="progress_bar_inner_stroke_width_unfinished" format="dimension" />
+        <attr name="progress_bar_outer_stroke_width" format="dimension" />
+        <attr name="progress_bar_outer_stroke_width_unfinished" format="dimension" />
+        <attr name="progress_bar_unfinished_color" format="color" />
+        <attr name="progress_bar_default_filled_color" format="color" />
+        <attr name="progress_bar_inner_color" format="color" />
+        <attr name="progress_bar_outer_color" format="color" />
+        <attr name="progress_bar_inner_progress" format="float" />
+        <attr name="progress_bar_outer_progress" format="float" />
+    </declare-styleable>
+</resources>

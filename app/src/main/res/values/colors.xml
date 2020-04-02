@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="transparent">#a5a7a8</color>
+
+
+    <color name="inner_progress_bar_color">#98C73D</color>
+    <color name="outer_progress_bar_color">#324090</color>
+
+    <color name="progress_bar_unfinished_color">#f2f2f2</color>
+    <color name="progress_bar_default_filled_color">#e6e6e6</color>
+</resources>
