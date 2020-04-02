@@ -2,8 +2,6 @@ package com.user.layeredprogressbars
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,6 +21,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val innerProgressBarValue = calculatePercentage(innerProgressOutOfEditText!!.text.toString().toFloat(), innerProgressTotalEditText!!.text.toString().toFloat())
                 layeredProgressBars!!.setInnerProgressBarProgress(innerProgressBarValue, true)
                 layeredProgressBars!!.setOuterProgressBarProgress(outerProgressBarValue, true)
+
+//                SET CUSTOM VALUE BY METHODS
+//                layeredProgressBars.setOuterProgressBarColor("#F6780D", true)
+//                layeredProgressBars.setInnerProgressBarColor("#F6780D", true)
+//                layeredProgressBars.setProgressBarUnfinishedColor("#000000", true)
+//                layeredProgressBars.setProgressBarDefaultFilledColor("#000000", true)
             } else {
                 Toast.makeText(this, "Enter all values", Toast.LENGTH_SHORT).show()
             }

@@ -10,6 +10,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.user.layeredprogressbars.Utils.sp2px
 
+
 class LayeredProgressBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : View(context, attrs, defStyle) {
     // Default values variables
     private val defaultInnerStrokeWidth: Float = sp2px(resources, 5f)
@@ -26,9 +27,9 @@ class LayeredProgressBar @JvmOverloads constructor(context: Context, attrs: Attr
     private var outerStrokeWidthUnfinished = 0f
     private var progressBarOuterColor = 0
     private var progressBarInnerColor = 0
-    private var ringUnfinishedColor = 0
-    private var chartRingOverallProgress = 0f
-    private var chartRingSpeedProgress = 0f
+    private var progressBarUnfinishedColor = 0
+    private var progressBarOverallProgress = 0f
+    private var progressBarSpeedProgress = 0f
     private val emptyArcAngle = 360f
     private var progressBarPaint: Paint? = null
     private var progressBarOuter: RectF? = null
@@ -41,43 +42,44 @@ class LayeredProgressBar @JvmOverloads constructor(context: Context, attrs: Attr
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        // Draw empty rings
-        progressBarPaint!!.color = ringUnfinishedColor
+        // Draw empty progressBar
+        progressBarPaint!!.color = progressBarUnfinishedColor
         progressBarPaint!!.strokeWidth = outerStrokeWidthUnfinished
         val startAngle = 270f
         canvas.drawArc(progressBarOuter!!, startAngle, emptyArcAngle, false, progressBarPaint!!)
         progressBarPaint!!.strokeWidth = innerStrokeWidthUnfinished
         canvas.drawArc(progressBarInner!!, startAngle, emptyArcAngle, false, progressBarPaint!!)
         val highlighted = false
-        if (!highlighted) { // Draw filled rings
+        if (!highlighted) { // Draw filled progressBar
             progressBarPaint!!.strokeWidth = outerStrokeWidth
             progressBarPaint!!.color = progressBarOuterColor
-            canvas.drawArc(progressBarOuter!!, startAngle, chartRingOverallProgress, false, progressBarPaint!!)
+            canvas.drawArc(progressBarOuter!!, startAngle, progressBarOverallProgress, false, progressBarPaint!!)
             progressBarPaint!!.strokeWidth = innerStrokeWidth
             progressBarPaint!!.color = progressBarInnerColor
-            canvas.drawArc(progressBarInner!!, startAngle, chartRingSpeedProgress, false, progressBarPaint!!)
+            canvas.drawArc(progressBarInner!!, startAngle, progressBarSpeedProgress, false, progressBarPaint!!)
         } else {
-            val highlightedRing: Short = -1
-            when (highlightedRing) {
+            val highlightedProgressBar: Short = -1
+            when (highlightedProgressBar) {
                 OUTER_PROGRESS_BAR -> {
-                    // Draw filled rings
+                    // Draw filled progressBar
                     progressBarPaint!!.strokeWidth = outerStrokeWidth
                     progressBarPaint!!.color = progressBarOuterColor
-                    canvas.drawArc(progressBarOuter!!, startAngle, chartRingOverallProgress, false, progressBarPaint!!)
+                    canvas.drawArc(progressBarOuter!!, startAngle, progressBarOverallProgress, false, progressBarPaint!!)
                     progressBarPaint!!.strokeWidth = innerStrokeWidth
                     progressBarPaint!!.color = defaultProgressBarFilledColor
-                    canvas.drawArc(progressBarInner!!, startAngle, chartRingSpeedProgress, false, progressBarPaint!!)
+                    canvas.drawArc(progressBarInner!!, startAngle, progressBarSpeedProgress, false, progressBarPaint!!)
                 }
                 INNER_PROGRESS_BAR -> {
-                    // Draw filled rings
+                    // Draw filled progressBar
                     progressBarPaint!!.strokeWidth = innerStrokeWidth
                     progressBarPaint!!.color = progressBarInnerColor
-                    canvas.drawArc(progressBarOuter!!, startAngle, chartRingSpeedProgress, false, progressBarPaint!!)
+                    canvas.drawArc(progressBarOuter!!, startAngle, progressBarSpeedProgress, false, progressBarPaint!!)
                     progressBarPaint!!.color = defaultProgressBarFilledColor
                     progressBarPaint!!.strokeWidth = outerStrokeWidth
-                    canvas.drawArc(progressBarOuter!!, startAngle, chartRingOverallProgress, false, progressBarPaint!!)
+                    canvas.drawArc(progressBarOuter!!, startAngle, progressBarOverallProgress, false, progressBarPaint!!)
                 }
-                else -> throw IllegalArgumentException("Use one of the constants provided to highlight a ring: FIRST_INNER_RING, SECOND_INNER_RING, THIRD_INNER_RING or RING_OVERALL")
+                else -> throw IllegalArgumentException("Use one of the constants provided to " +
+                        "highlight a progressBar: OUTER_PROGRESS_BAR OR INNER_PROGRESS_BAR")
             }
         }
     }
@@ -87,7 +89,7 @@ class LayeredProgressBar @JvmOverloads constructor(context: Context, attrs: Attr
         innerStrokeWidthUnfinished = attributes.getDimension(R.styleable.customProgressBars_progress_bar_inner_stroke_width_unfinished, defaultInnerStrokeUnfinishedWidth)
         outerStrokeWidth = attributes.getDimension(R.styleable.customProgressBars_progress_bar_outer_stroke_width, defaultOuterStrokeWidth)
         outerStrokeWidthUnfinished = attributes.getDimension(R.styleable.customProgressBars_progress_bar_outer_stroke_width_unfinished, defaultOuterStrokeUnfinishedWidth)
-        ringUnfinishedColor = attributes.getColor(R.styleable.customProgressBars_progress_bar_unfinished_color, defaultProgressBarUnfinishedColor)
+        progressBarUnfinishedColor = attributes.getColor(R.styleable.customProgressBars_progress_bar_unfinished_color, defaultProgressBarUnfinishedColor)
         defaultProgressBarFilledColor = attributes.getColor(R.styleable.customProgressBars_progress_bar_default_filled_color, defaultProgressBarFilledColor)
         progressBarOuterColor = attributes.getColor(R.styleable.customProgressBars_progress_bar_outer_color, defaultProgressBarFilledColor)
         progressBarInnerColor = attributes.getColor(R.styleable.customProgressBars_progress_bar_inner_color, defaultProgressBarFilledColor)
@@ -95,10 +97,10 @@ class LayeredProgressBar @JvmOverloads constructor(context: Context, attrs: Attr
         setInnerProgressBarProgress(attributes.getFloat(R.styleable.customProgressBars_progress_bar_inner_progress, defaultProgressBarInnerThirdProgress), false)
     }
 
-    private fun initPainters() { // Ring Rectangle objects
+    private fun initPainters() { // progressBar Rectangle objects
         progressBarOuter = RectF()
         progressBarInner = RectF()
-        // Ring Paint
+        // progressBar Paint
         progressBarPaint = Paint()
         progressBarPaint!!.isAntiAlias = true
         progressBarPaint!!.style = Paint.Style.STROKE
@@ -106,14 +108,36 @@ class LayeredProgressBar @JvmOverloads constructor(context: Context, attrs: Attr
     }
 
     fun setOuterProgressBarProgress(outerProgress: Float, invalidate: Boolean) {
-        chartRingOverallProgress = emptyArcAngle / 100f * outerProgress
+        progressBarOverallProgress = emptyArcAngle / 100f * outerProgress
         if (invalidate) invalidate()
     }
 
     fun setInnerProgressBarProgress(innerProgress: Float, invalidate: Boolean) {
-        chartRingSpeedProgress = emptyArcAngle / 100f * innerProgress
+        progressBarSpeedProgress = emptyArcAngle / 100f * innerProgress
         if (invalidate) invalidate()
     }
+
+    fun setOuterProgressBarColor(colorInHexFormat: String, invalidate: Boolean) {
+        progressBarOuterColor = Color.parseColor(colorInHexFormat)
+        if (invalidate) invalidate()
+    }
+
+    fun setInnerProgressBarColor(colorInHexFormat: String, invalidate: Boolean) {
+        progressBarInnerColor = Color.parseColor(colorInHexFormat)
+        if (invalidate) invalidate()
+    }
+
+    fun setProgressBarUnfinishedColor(colorInHexFormat: String, invalidate: Boolean) {
+        progressBarUnfinishedColor = Color.parseColor(colorInHexFormat)
+        if (invalidate) invalidate()
+    }
+
+
+    fun setProgressBarDefaultFilledColor(colorInHexFormat: String, invalidate: Boolean) {
+        defaultProgressBarFilledColor = Color.parseColor(colorInHexFormat)
+        if (invalidate) invalidate()
+    }
+
 
     companion object {
         const val OUTER_PROGRESS_BAR: Short = 1
